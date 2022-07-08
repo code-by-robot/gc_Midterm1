@@ -16,12 +16,12 @@ List<Book> AllBooks = new List<Book>()
     new Book("The Great Gatsby", "F. Scott Fitzgerald", "On Shelf"),
 };
 
-DateTime testDate = DateTime.Now;
-Console.WriteLine(testDate);
-//DateTime returnDate = Book.ReturnDate(testDate);
-DateTime returnDate = testDate.AddDays(14);
-Console.WriteLine(returnDate);
+////Test for DateTime
+//DateTime testDate = DateTime.Now;
+//Console.WriteLine(testDate);
+//DateTime returnDate = testDate.AddDays(14);
+//Console.WriteLine(returnDate);
 
-//DateTime x = DateTime.Now;
-//Console.WriteLine(x);
-//CheckedOutBook c = new CheckedOutBook("test", "tester", "available", )
+//Display Book List
+AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+

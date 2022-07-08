@@ -11,9 +11,16 @@ namespace Midterm1
         public string Title { get; set; }
         public string Author { get; set; }
         public string Status { get; set; }
-        public DateTime CheckOutDate = DateTime.Now;
+        public DateTime? CheckOutDate {get; set;}
 
         //Constructor
+        public Book(string _title, string _author, string _status)
+        {
+            Title = _title;
+            Author = _author;
+            Status = _status;
+            CheckOutDate = null;
+        }
         public Book(string _title, string _author, string _status, DateTime _checkoutdate)
         {
             Title = _title;
@@ -22,18 +29,6 @@ namespace Midterm1
             CheckOutDate = _checkoutdate;
         }
         //methods
-        //ReturnDate takes in a DateTime x and adds 14 days.  This then returns the due date in a string
-        public static DateTime ReturnDate(DateTime x)
-        {
-            double test = 14;
-            x.AddDays(test);
-            return x;
-        }
-        //string to datetime converter
-        public static DateTime DateConverter(string x)
-        {
-            DateTime checkOutDate = DateTime.Parse(x);
-            return checkOutDate;
-        }
+
     }
 }

@@ -25,3 +25,57 @@ List<Book> AllBooks = new List<Book>()
 //Display Book List
 AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
 
+
+
+
+//Book bookToCheckOut = AllBooks.Where(b => b.Title == choice);
+//Console.WriteLine(bookToCheckOut);
+
+List<Book> checkedOutBooks = new List<Book>()
+{
+
+};
+
+bool bookInStock = false;
+while (bookInStock == false)
+{
+    Console.WriteLine("What book would you like to check out?");
+    string choice = "";
+    choice = Console.ReadLine();
+
+    for (int i = 0; i < AllBooks.Count; i++)
+    {
+        if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
+        {
+            Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
+            checkedOutBooks.Add(AllBooks[i]);
+            AllBooks.RemoveAt(i);
+
+            Book notAvailableBook = AllBooks[i.];
+
+            bookInStock = true;
+            break;
+        }
+        else
+        {
+            bookInStock = false;
+        }
+    }
+    if(bookInStock == false)
+    {
+        Console.WriteLine("We do not have that book.");
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+

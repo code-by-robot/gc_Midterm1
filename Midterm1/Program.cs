@@ -23,7 +23,7 @@ List<Book> AllBooks = new List<Book>()
 //Console.WriteLine(returnDate);
 
 //Display Book List
-AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+
 
 
 
@@ -36,37 +36,51 @@ List<Book> checkedOutBooks = new List<Book>()
 
 };
 
-bool bookInStock = false;
-while (bookInStock == false)
+
+bool library = true;
+while (library)
 {
-    Console.WriteLine("What book would you like to check out?");
-    string choice = "";
-    choice = Console.ReadLine();
-
-    for (int i = 0; i < AllBooks.Count; i++)
+    bool bookInStock = false;
+    while (bookInStock == false)
     {
-        if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
+        AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+        Console.WriteLine("\nWhat book would you like to check out?\n");
+        string choice = "";
+        choice = Console.ReadLine();
+        for (int i = 0; i < AllBooks.Count; i++)
         {
-            Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
-            checkedOutBooks.Add(AllBooks[i]);
-            AllBooks.RemoveAt(i);
-
-            Book notAvailableBook = AllBooks[i.];
-
-            bookInStock = true;
-            break;
+            if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
+            {
+               
+                    Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
+                    Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked out", DateTime.Now.AddDays(14));
+                    checkedOutBooks.Add(notAvailableBook);
+                    AllBooks.RemoveAt(i);
+                    Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}");
+                    bookInStock = true;
+                    break;
+            }
+            //else if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "Checked Out")
+            //{
+            //    Console.WriteLine("Book is not available at this time.");
+            //}
+            else
+            {
+                bookInStock = false;
+            }
         }
-        else
+        if (bookInStock == false)
         {
-            bookInStock = false;
+            Console.WriteLine("We do not have that book.\n");
         }
+        
+
     }
-    if(bookInStock == false)
-    {
-        Console.WriteLine("We do not have that book.");
-    }
-    
+    library = Validator.Validator.GetContinue("Would you like to check out another book?");
+
 }
+Console.WriteLine("Thanks for coming to the Grand Circus Library!  Enjoy your books.");
+
 
 
 

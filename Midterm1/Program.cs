@@ -1,6 +1,6 @@
 ﻿using Midterm1;
 
-List<Book> AllBooks = new List<Book>()
+List<Book> AllBooks1 = new List<Book>()
 {
     new Book("Ready Player One", "Ernest Cline", "On Shelf"),
     new Book("1984", "George Orwell", "On Shelf"),
@@ -16,71 +16,91 @@ List<Book> AllBooks = new List<Book>()
     new Book("The Great Gatsby", "F. Scott Fitzgerald", "On Shelf"),
 };
 
-////Test for DateTime
-//DateTime testDate = DateTime.Now;
-//Console.WriteLine(testDate);
-//DateTime returnDate = testDate.AddDays(14);
-//Console.WriteLine(returnDate);
-
-//Display Book List
-
-
-
-
-
-//Book bookToCheckOut = AllBooks.Where(b => b.Title == choice);
-//Console.WriteLine(bookToCheckOut);
-
-List<Book> checkedOutBooks = new List<Book>()
-{
-
-};
+List<Book> checkedOutBooks1 = new List<Book>();
 
 
 bool library = true;
 while (library)
 {
-    bool bookInStock = false;
-    while (bookInStock == false)
+    bool bookInStock1 = false;
+    while (bookInStock1 == false)
     {
-        AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
-        Console.WriteLine("\nWhat book would you like to check out?\n");
-        string choice = "";
-        choice = Console.ReadLine();
-        for (int i = 0; i < AllBooks.Count; i++)
+        bool interactionIsBorrow = Validator.Validator.GetContinue("Would you like to borrow or return a book?", "borrow", "return");
+        if (interactionIsBorrow == true)
         {
-            if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
-            {
-               
-                    Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
-                    Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked out", DateTime.Now.AddDays(14));
-                    checkedOutBooks.Add(notAvailableBook);
-                    AllBooks.RemoveAt(i);
-                    Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}");
-                    bookInStock = true;
-                    break;
-            }
-            //else if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "Checked Out")
-            //{
-            //    Console.WriteLine("Book is not available at this time.");
-            //}
-            else
-            {
-                bookInStock = false;
-            }
+            CheckOutBook(AllBooks1, checkedOutBooks1,ref bookInStock1);
         }
-        if (bookInStock == false)
+        else
         {
-            Console.WriteLine("We do not have that book.\n");
+            ReturnBook(AllBooks1, checkedOutBooks1,ref bookInStock1);
         }
-        
-
+        library = Validator.Validator.GetContinue("Would you like to perform another action?");
     }
-    library = Validator.Validator.GetContinue("Would you like to check out another book?");
-
+    
 }
 Console.WriteLine("Thanks for coming to the Grand Circus Library!  Enjoy your books.");
 
+
+
+//Methods
+static void CheckOutBook(List<Book> AllBooks, List<Book> checkedOutBooks, ref bool bookInStock)
+{
+    AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+    Console.WriteLine("\nWhat book would you like to check out?\n");
+    string choice = "";
+    choice = Console.ReadLine();
+    for (int i = 0; i < AllBooks.Count; i++)
+    {
+        if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
+        {
+            Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
+            Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14));
+            checkedOutBooks.Add(notAvailableBook);
+            AllBooks.RemoveAt(i);
+            Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}");
+            bookInStock = true;
+            break;
+        }
+        else
+        {
+            bookInStock = false;
+        }
+    }
+    if (bookInStock == false)
+    {
+        Console.WriteLine("We do not have that book.\n");
+    }
+
+}
+
+static void ReturnBook(List<Book> AllBooks, List<Book> checkedOutBooks,ref bool bookInStock)
+{
+    checkedOutBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+    Console.WriteLine("\nWhat book would you like to return?\n");
+    string choice = "";
+    choice = Console.ReadLine();
+    for (int i = 0; i < checkedOutBooks.Count; i++)
+    {
+        if ((checkedOutBooks[i].Title == choice || checkedOutBooks[i].Author == choice) && checkedOutBooks[i].Status == "Checked Out")
+        {
+            Console.WriteLine($"You returned {checkedOutBooks[i].Title} by {checkedOutBooks[i].Author}.");
+            Book AvailableBook = new Book(checkedOutBooks[i].Title, checkedOutBooks[i].Author, "On Shelf");
+            AllBooks.Add(AvailableBook);
+            checkedOutBooks.RemoveAt(i);
+            bookInStock = true;
+            break;
+        }
+        else
+        {
+            bookInStock = false;
+        }
+    }
+    if (bookInStock == false)
+    {
+        Console.WriteLine("That is not our book.\n");
+    }
+
+}
 
 
 

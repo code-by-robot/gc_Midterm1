@@ -80,14 +80,18 @@ while (library)
 Console.WriteLine("Thanks for coming to the Grand Circus Library!  Enjoy your books.");
 //Beginning of the burning of the library
 bool bookInStock2 = false;
-BurnTheLibrary(ref oldBooks,ref bookInStock2);
+
+BurnTheLibrary(ref oldBooks, ref bookInStock2);
 //AllBooks1.Add((Book)oldBooks.Where(x => x.Status == "Checked Out"));
 List<Book> savedBooks = oldBooks.Where(x => x.Status == "Checked Out").ToList();
-foreach (Book book in savedBooks)
+for (int i = 0; i <= savedBooks.Count; i++)
 {
-    AllBooks1.Add(book);
-    savedBooks.Remove(book);
+    savedBooks[i].Status = "On Shelf";
+    AllBooks1.Add(savedBooks[i]);
+    savedBooks.Remove(savedBooks[i]);
 }
+
+
 
 
 //UPDATE FILE WITH NEW LIBRARY LIST
@@ -237,8 +241,19 @@ static void BurnTheLibrary(ref List<Book> AllBooks, ref bool bookInStock)
         Console.ReadKey();
         Console.WriteLine("\n You see a lot of books being destroyed, and feel the overwhelming urge to save some of them.\n press any key to continue...");
         Console.ReadKey();
-        Console.WriteLine("What books do you save?");
-        CheckOutBook(ref AllBooks, ref bookInStock);
+        
+
+        bool runProgram2 = true;
+        while (runProgram2)
+        {
+            Console.WriteLine("What books do you save?");
+            bookInStock = false;
+            CheckOutBook(ref AllBooks, ref bookInStock);
+
+            runProgram2 = Validator.Validator.GetContinue("Would you like to save another book?");
+        }
+
+        
 
 
     }

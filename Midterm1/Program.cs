@@ -49,6 +49,8 @@ static void CheckOutBook(List<Book> AllBooks, List<Book> checkedOutBooks, ref bo
     Console.WriteLine("\nWhat book would you like to check out?\n");
     string choice = "";
     choice = Console.ReadLine();
+
+    //Loop over all books currently checked into the library 
     for (int i = 0; i < AllBooks.Count; i++)
     {
         if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "On Shelf")
@@ -56,8 +58,14 @@ static void CheckOutBook(List<Book> AllBooks, List<Book> checkedOutBooks, ref bo
             Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
             Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14));
             checkedOutBooks.Add(notAvailableBook);
-            AllBooks.RemoveAt(i);
+            AllBooks[i].Status = "Checked Out";
             Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}");
+            bookInStock = true;
+            break;
+        }
+        else if ((AllBooks[i].Title == choice || AllBooks[i].Author == choice) && AllBooks[i].Status == "Checked Out")
+        {
+            Console.WriteLine($"This book is currently checked out.");
             bookInStock = true;
             break;
         }
@@ -66,6 +74,7 @@ static void CheckOutBook(List<Book> AllBooks, List<Book> checkedOutBooks, ref bo
             bookInStock = false;
         }
     }
+        
     if (bookInStock == false)
     {
         Console.WriteLine("We do not have that book.\n");
@@ -84,8 +93,9 @@ static void ReturnBook(List<Book> AllBooks, List<Book> checkedOutBooks,ref bool 
         if ((checkedOutBooks[i].Title == choice || checkedOutBooks[i].Author == choice) && checkedOutBooks[i].Status == "Checked Out")
         {
             Console.WriteLine($"You returned {checkedOutBooks[i].Title} by {checkedOutBooks[i].Author}.");
-            Book AvailableBook = new Book(checkedOutBooks[i].Title, checkedOutBooks[i].Author, "On Shelf");
-            AllBooks.Add(AvailableBook);
+            //Book AvailableBook = new Book(checkedOutBooks[i].Title, checkedOutBooks[i].Author, "On Shelf");
+            var returnedBook = AllBooks.Where(x => x.Title ==choice || x.Author ==choice).ToList();
+            returnedBook.ForEach(y => y.Status = "On Shelf");
             checkedOutBooks.RemoveAt(i);
             bookInStock = true;
             break;
@@ -101,15 +111,3 @@ static void ReturnBook(List<Book> AllBooks, List<Book> checkedOutBooks,ref bool 
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-

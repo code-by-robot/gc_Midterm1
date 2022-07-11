@@ -161,10 +161,10 @@ static void ReturnBook(ref List<Book> AllBooks, ref bool bookInStock)
                     bookInStock = true;
                     break;
                 }
-                else if ((AllBooks[i].Title.ToLower().Contains(choice) || AllBooks[i].Author.ToLower().Contains(choice)) && AllBooks[i].Status == "Checked Out")
+                else if ((AllBooks[i].Title.ToLower().Contains(choice) || AllBooks[i].Author.ToLower().Contains(choice)) && AllBooks[i].Status == "On Shelf")
                 {
                     //If checked out, tells user
-                    Console.WriteLine($"\nThis book is currently checked out.\n");
+                    Console.WriteLine($"\nThis book is currently available to be checked out.\n");
                     bookInStock = true;
                     break;
                 }

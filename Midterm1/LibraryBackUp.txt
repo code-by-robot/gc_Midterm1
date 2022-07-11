@@ -1,7 +1,7 @@
 Ready Player One,Ernest Cline,On Shelf,
 1984,George Orwell,Checked Out,
 Starship Troopers,Robert A. Heinlein,On Shelf,
-2001: A Space Odyssey,Arthur C. Clarke,On Shelf,
+2001: A Space Odyssey,Arthur C. Clarke,Checked Out,
 Twilight,Stephenie Meyer,On Shelf,
 The Hunger Games,Suzanne Collins,On Shelf,
 Astrophysics for People in a Hurry,Neil deGrasse Tyson,On Shelf,

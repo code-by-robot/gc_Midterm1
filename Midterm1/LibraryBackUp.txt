@@ -1,4 +1,4 @@
-Ready Player One,Ernest Cline,Checked Out,
+Ready Player One,Ernest Cline,On Shelf,
 1984,George Orwell,Checked Out,
 Starship Troopers,Robert A. Heinlein,On Shelf,
 2001: A Space Odyssey,Arthur C. Clarke,On Shelf,

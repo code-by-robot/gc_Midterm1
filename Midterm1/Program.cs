@@ -1,15 +1,17 @@
 ﻿using Midterm1;
 using System.Globalization;
-//File for importing the library
+//File for importing the libraries
 string filePath = "../../../LibraryBackUp.txt";
+string filePath2 = "../../../Alexandria.txt";
 
 //Initialize list of books in library
 List<Book> AllBooks1 = new List<Book>();
 
-StreamReader reader = new StreamReader(filePath);
-//read in the library.
+//read in the original library.
 if (File.Exists(filePath))
 {
+    StreamReader reader = new StreamReader(filePath);
+
     while (true)
     {
         string line = reader.ReadLine();
@@ -47,15 +49,42 @@ else
     };
 }
 
-List<Book> oldBooks = new List<Book>()
+
+
+List<Book> oldBooks = new List<Book>();
+//read in the OLD library.
+if (File.Exists(filePath2))
 {
+    StreamReader reader2 = new StreamReader(filePath2);
+    while (true)
+    {
+        string line = reader2.ReadLine();
+        if (line == null)
+        {
+            break;
+        }
+        else
+        {
+            //take line and turn into book
+            string[] AllBooksArray = line.Split(',');
+            Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
+            oldBooks.Add(newBook);
+        }
+    }
+    reader2.Close();
+}
+else
+{
+    oldBooks = new List<Book>()
+    {
     new Book("How to Die of Sepsis", "Sepsis victim #12", "On Shelf"),
     new Book("Building Pyramids With Aliens 101", "Baskakeren III", "On Shelf"),
     new Book("Praying to Cats", "Pharaoh Hatshepsut", "On Shelf"),
     new Book("How to Train Your Dragon", "Pixar 2012", "On Shelf"),
     new Book("Irrigating the Nile River Valley", "King Ptolemy I Soter", "On Shelf"),
     new Book("New World Order: Starting a Modern Cult", "The Illuminati", "On Shelf"),
-};
+    };
+}
 
 //MAIN PROGRAM
 bool library = true;
@@ -78,21 +107,22 @@ while (library)
 
 }
 Console.WriteLine("Thanks for coming to the Grand Circus Library!  Enjoy your books.");
+
 //Beginning of the burning of the library
 bool bookInStock2 = false;
-
 BurnTheLibrary(ref oldBooks, ref bookInStock2);
 //AllBooks1.Add((Book)oldBooks.Where(x => x.Status == "Checked Out"));
 List<Book> savedBooks = oldBooks.Where(x => x.Status == "Checked Out").ToList();
-for (int i = 0; i <= savedBooks.Count; i++)
+if(savedBooks.Count > 0)
 {
-    savedBooks[i].Status = "On Shelf";
-    AllBooks1.Add(savedBooks[i]);
-    savedBooks.Remove(savedBooks[i]);
+    for (int i = 0; i <= savedBooks.Count; i++)
+    {
+        savedBooks[i].Status = "On Shelf";
+        AllBooks1.Add(savedBooks[i]);
+        savedBooks.Remove(AllBooks1.Last());
+        oldBooks.Remove(AllBooks1.Last());
+    }
 }
-
-
-
 
 //UPDATE FILE WITH NEW LIBRARY LIST
 StreamWriter writer = new StreamWriter(filePath, false);
@@ -101,6 +131,14 @@ foreach (Book b in AllBooks1)
     writer.WriteLine($"{b.Title},{b.Author},{b.Status},{b.ReturnDate}");
 }
 writer.Close();
+
+//Update Alexandria Library
+StreamWriter writer1 = new StreamWriter(filePath2, false);
+foreach (Book b in oldBooks)
+{
+    writer1.WriteLine($"{b.Title},{b.Author},{b.Status}");
+}
+writer1.Close();
 
 
 //Methods
@@ -241,7 +279,7 @@ static void BurnTheLibrary(ref List<Book> AllBooks, ref bool bookInStock)
         Console.ReadKey();
         Console.WriteLine("\n You see a lot of books being destroyed, and feel the overwhelming urge to save some of them.\n press any key to continue...");
         Console.ReadKey();
-        
+
 
         bool runProgram2 = true;
         while (runProgram2)
@@ -253,7 +291,8 @@ static void BurnTheLibrary(ref List<Book> AllBooks, ref bool bookInStock)
             runProgram2 = Validator.Validator.GetContinue("Would you like to save another book?");
         }
 
-        
+        Console.WriteLine("You quickly step back through the door you came from, put your saved item(s) back on the library shelf, and leave.");
+
 
 
     }

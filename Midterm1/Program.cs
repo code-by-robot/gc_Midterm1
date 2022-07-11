@@ -14,16 +14,19 @@ if (File.Exists(filePath))
 
     while (true)
     {
+        //checks to see if each line contains characters or not
         string line = reader.ReadLine();
         if (line == null)
         {
             break;
         }
+        //if line isn't null, reader reads the line and splits at every comma into a string array
         else
         {
             //take line and turn into book
             string[] AllBooksArray = line.Split(',');
             Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
+            //adding the array to list
             AllBooks1.Add(newBook);
         }
     }
@@ -111,14 +114,17 @@ Console.WriteLine("Thanks for coming to the Grand Circus Library!  Enjoy your bo
 //Beginning of the burning of the library
 bool bookInStock2 = false;
 BurnTheLibrary(ref oldBooks, ref bookInStock2);
-//AllBooks1.Add((Book)oldBooks.Where(x => x.Status == "Checked Out"));
+//creates a new list out of oldBooks where status equals checked out
 List<Book> savedBooks = oldBooks.Where(x => x.Status == "Checked Out").ToList();
+//only runs if there are books in the savedBooks list
 if(savedBooks.Count > 0)
 {
     for (int i = 0; i <= savedBooks.Count; i++)
     {
         savedBooks[i].Status = "On Shelf";
+        //adds to AllBooks form savedBooks
         AllBooks1.Add(savedBooks[i]);
+        //because we just added element to the end of AllBooks, we can use .Last to remove it from savedBooks
         savedBooks.Remove(AllBooks1.Last());
         oldBooks.Remove(AllBooks1.Last());
     }
@@ -165,7 +171,9 @@ static void CheckOutBook(ref List<Book> AllBooks, ref bool bookInStock)
                 {
                     //If on shelf, gives return date
                     Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
+                    //uses the overloaded constructor to give the book a return date
                     Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14));
+                    //updates on shelf to checked out
                     AllBooks[i].Status = "Checked Out";
                     Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}\n");
                     bookInStock = true;
@@ -180,6 +188,7 @@ static void CheckOutBook(ref List<Book> AllBooks, ref bool bookInStock)
                 }
                 else
                 {
+                    //runs if the user input doesn't match any books
                     bookInStock = false;
                 }
             }
@@ -219,6 +228,7 @@ static void ReturnBook(ref List<Book> AllBooks, ref bool bookInStock)
                     Console.WriteLine($"\nYou returned {AllBooks[i].Title} by {AllBooks[i].Author}.");
                     //Book AvailableBook = new Book(checkedOutBooks[i].Title, checkedOutBooks[i].Author, "On Shelf");
                     List<Book> returnedBook = AllBooks.Where(x => x.Title.ToLower().Contains(choice) || x.Author.ToLower().Contains(choice)).ToList();
+                    //updates checked out to on shelf
                     returnedBook.ForEach(y => y.Status = "On Shelf");
                     bookInStock = true;
                     break;
@@ -232,16 +242,19 @@ static void ReturnBook(ref List<Book> AllBooks, ref bool bookInStock)
                 }
                 else
                 {
+                    //if user input doesn't match book
                     bookInStock = false;
                 }
             }
             if (bookInStock == false)
             {
+                //if user input doesn't match book
                 Console.WriteLine("\nThat is not our book.\n");
             }
         }
         else
         {
+            //if user search entry returns multiple books
             Console.WriteLine("\nThe books that matched your search are: ");
             multipleBooks.ForEach(x => Console.WriteLine($"{x.Title}"));
             Console.WriteLine("Please refine your search.\n");
@@ -249,11 +262,13 @@ static void ReturnBook(ref List<Book> AllBooks, ref bool bookInStock)
     }
 }
 
+//returns a list of books that match search term
 static List<Book> checkForMultiples(ref List<Book> AllBooks, string choice)
 {
     List<Book> toReturn = new List<Book>();
     for (int i = 0; i < AllBooks.Count; i++)
     {
+        //checks to see if each book in AllBooks matches choice, if so it gets added to list
         if ((AllBooks[i].Title.ToLower().Contains(choice) || AllBooks[i].Author.ToLower().Contains(choice)))
         {
             toReturn.Add(AllBooks[i]);
@@ -286,8 +301,9 @@ static void BurnTheLibrary(ref List<Book> AllBooks, ref bool bookInStock)
         {
             Console.WriteLine("What books do you save?");
             bookInStock = false;
+            //references the CheckOutBook method instead of rewriting code
             CheckOutBook(ref AllBooks, ref bookInStock);
-
+            //validator to allow user to save multiple books
             runProgram2 = Validator.Validator.GetContinue("Would you like to save another book?");
         }
 

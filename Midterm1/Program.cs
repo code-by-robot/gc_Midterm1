@@ -23,11 +23,18 @@ if (File.Exists(filePath))
         //if line isn't null, reader reads the line and splits at every comma into a string array
         else
         {
-            //take line and turn into book
-            string[] AllBooksArray = line.Split(',');
-            Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
-            //adding the array to list
-            AllBooks1.Add(newBook);
+            try
+            {
+                string[] AllBooksArray = line.Split(',');
+                Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2], AllBooksArray[3]);
+                AllBooks1.Add(newBook);
+            }
+            catch (Exception)
+            {
+                string[] AllBooksArray = line.Split(',');
+                Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
+                AllBooks1.Add(newBook);
+            }
         }
     }
     reader.Close();
@@ -69,9 +76,19 @@ if (File.Exists(filePath2))
         else
         {
             //take line and turn into book
-            string[] AllBooksArray = line.Split(',');
-            Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
-            oldBooks.Add(newBook);
+            try
+            {
+                string[] AllBooksArray = line.Split(',');
+                Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2], AllBooksArray[3]);
+                oldBooks.Add(newBook);
+            }
+            catch (Exception)
+            {
+                string[] AllBooksArray = line.Split(',');
+                Book newBook = new Book(AllBooksArray[0], AllBooksArray[1], AllBooksArray[2]);
+                oldBooks.Add(newBook);
+            }
+            
         }
     }
     reader2.Close();
@@ -80,12 +97,12 @@ else
 {
     oldBooks = new List<Book>()
     {
-    new Book("How to Die of Sepsis", "Sepsis victim #12", "On Shelf"),
-    new Book("Building Pyramids With Aliens 101", "Baskakeren III", "On Shelf"),
-    new Book("Praying to Cats", "Pharaoh Hatshepsut", "On Shelf"),
-    new Book("How to Train Your Dragon", "Pixar 2012", "On Shelf"),
-    new Book("Irrigating the Nile River Valley", "King Ptolemy I Soter", "On Shelf"),
-    new Book("New World Order: Starting a Modern Cult", "The Illuminati", "On Shelf"),
+    new Book("How to Die of Sepsis", "Sepsis victim #12", "Burning"),
+    new Book("Building Pyramids With Aliens 101", "Baskakeren III", "Burning"),
+    new Book("Praying to Cats", "Pharaoh Hatshepsut", "Burning"),
+    new Book("How to Train Your Dragon", "Pixar 2012", "Burning"),
+    new Book("Irrigating the Nile River Valley", "King Ptolemy I Soter", "Burning"),
+    new Book("New World Order: Starting a Modern Cult", "The Illuminati", "Burning"),
     };
 }
 
@@ -119,7 +136,7 @@ List<Book> savedBooks = oldBooks.Where(x => x.Status == "Checked Out").ToList();
 //only runs if there are books in the savedBooks list
 if(savedBooks.Count > 0)
 {
-    for (int i = 0; i <= savedBooks.Count; i++)
+    for (int i = savedBooks.Count-1; i >= 0 ; i--)
     {
         savedBooks[i].Status = "On Shelf";
         //adds to AllBooks form savedBooks
@@ -154,7 +171,14 @@ static void CheckOutBook(ref List<Book> AllBooks, ref bool bookInStock)
     while (bookInStock == false)
     {
         //Displays Book List
-        AllBooks.ForEach(b => Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status)));
+        AllBooks.ForEach(b => {
+            if(b.Status.ToLower() == "burning")
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+            Console.WriteLine(String.Format("{0,-40} {1,-25} {2,-10}", b.Title, b.Author, b.Status));
+            Console.ResetColor();
+            });
 
         //Prompts for search term
         Console.WriteLine("\nWhat book would you like to check out?\n");
@@ -172,10 +196,24 @@ static void CheckOutBook(ref List<Book> AllBooks, ref bool bookInStock)
                     //If on shelf, gives return date
                     Console.WriteLine($"You checked out {AllBooks[i].Title} by {AllBooks[i].Author}.");
                     //uses the overloaded constructor to give the book a return date
-                    Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14));
+                    //Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14).ToString());
                     //updates on shelf to checked out
                     AllBooks[i].Status = "Checked Out";
-                    Console.WriteLine($"Please return this book by {notAvailableBook.ReturnDate}\n");
+                    AllBooks[i].ReturnDate = DateTime.Now.AddDays(14).ToString();
+                    Console.WriteLine($"Please return this book by {AllBooks[i].ReturnDate}\n");
+                    bookInStock = true;
+                    break;
+                }
+                else if ((AllBooks[i].Title.ToLower().Contains(choice) || AllBooks[i].Author.ToLower().Contains(choice)) && AllBooks[i].Status == "Burning")
+                {
+                    //If on shelf, gives return date
+                    Console.WriteLine($"You saved {AllBooks[i].Title} by {AllBooks[i].Author} from the flames.");
+                    //uses the overloaded constructor to give the book a return date
+                    //Book notAvailableBook = new Book(AllBooks[i].Title, AllBooks[i].Author, "Checked Out", DateTime.Now.AddDays(14).ToString());
+                    //updates on shelf to checked out
+                    AllBooks[i].Status = "Checked Out";
+                    AllBooks[i].ReturnDate = DateTime.Now.AddDays(14).ToString();
+                    //Console.WriteLine($"Please return this book by {AllBooks[i].ReturnDate}\n");
                     bookInStock = true;
                     break;
                 }

@@ -11,7 +11,7 @@ namespace Midterm1
         public string Title { get; set; }
         public string Author { get; set; }
         public string Status { get; set; }
-        public DateTime? ReturnDate {get; set;}
+        public string? ReturnDate {get; set;}
 
         //Constructor
         public Book(string _title, string _author, string _status)
@@ -21,7 +21,7 @@ namespace Midterm1
             Status = _status;
             ReturnDate = null;
         }
-        public Book(string _title, string _author, string _status, DateTime _returndate)
+        public Book(string _title, string _author, string _status, string _returndate)
         {
             Title = _title;
             Author = _author;

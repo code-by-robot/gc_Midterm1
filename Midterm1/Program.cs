@@ -326,11 +326,11 @@ static void BurnTheLibrary(ref List<Book> AllBooks, ref bool bookInStock)
     {
         Console.WriteLine("\nYou cautiously open the door on the left.\nIn the blink of an eye you are suddenly transported back in time to the year 48 B.C.\nPress any key to continue...");
         Console.ReadKey();
-        Console.WriteLine("\nYou find it hard to breathe, and see the room filling with smoke.\npress any key to continue...");
+        Console.WriteLine("\nYou find it hard to breathe, and see the room filling with smoke.\nPress any key to continue...");
         Console.ReadKey();
-        Console.WriteLine("\n You look around and see hundreds of men fighting.\npress any key to continue...");
+        Console.WriteLine("\n You look around and see hundreds of men fighting.\nPress any key to continue...");
         Console.ReadKey();
-        Console.WriteLine("\n You see a lot of books being destroyed, and feel the overwhelming urge to save some of them.\n press any key to continue...");
+        Console.WriteLine("\n You see a lot of books being destroyed, and feel the overwhelming urge to save some of them.\nPress any key to continue...");
         Console.ReadKey();
 
 
